@@ -1,4 +1,12 @@
 <?php
+if (!function_exists('mb_trim')) {
+	function mb_trim($str)
+	{
+		return mb_ereg_replace(
+			'^[[:space:]]*([\s\S]*?)[[:space:]]*$', '\1', $str);
+	}
+}
+
 class MbConvertBehavior extends ModelBehavior {
 
 	function beforeValidate(&$model)
