@@ -77,13 +77,22 @@ class JqueryUiHelper extends AppHelper {
 		$default = array(
 			'id'=>'dialog_link',
 			'class'=>null,
+			'icon'=>'newwin',
+			'state'=>'default',
+			'corner'=>'all',
 		);
 		$options = am($default, $options);
-		$span = $this->Html->tag('span', '', array(
-			'class'=>'ui-icon ui-icon-newwin',
-			'style'=>'left:0.2em;margin:-8px 5px 0 0;position:absolute;top:50%;'));
+		
+		$span = '';
+		if ($options['icon']) {
+			$attr = array(
+				'class'=>'ui-icon ui-icon-'.$options['icon'],
+				'style'=>'left:0.2em;margin:-8px 5px 0 0;position:absolute;top:50%;',
+			);
+			$span = $this->Html->tag('span', '', $attr);
+		}
 		$attr = array(
-			'class'=>$options['class'].' ui-state-default ui-corner-all',
+			'class'=>$options['class'].' ui-state-'.$options['state'].' ui-corner-'.$options['corner'],
 			'style'=>'padding:0.4em 1em 0.4em 20px;position:relative;text-decoration:none;',
 		);
 		if ($options['id']) {
