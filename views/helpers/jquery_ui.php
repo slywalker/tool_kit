@@ -73,9 +73,30 @@ class JqueryUiHelper extends AppHelper {
 		return $this->Html->div($options['class'], $out, array('id'=>$options['id']));
 	}
 	
+	function dialogLink($title, $url, $options=array()) {
+		$default = array(
+			'id'=>'dialog_link',
+			'class'=>null,
+		);
+		$options = am($default, $options);
+		$span = $this->Html->tag('span', '', array(
+			'class'=>'ui-icon ui-icon-newwin',
+			'style'=>'left:0.2em;margin:-8px 5px 0 0;position:absolute;top:50%;'));
+		$attr = array(
+			'class'=>$options['class'].' ui-state-default ui-corner-all',
+			'style'=>'padding:0.4em 1em 0.4em 20px;position:relative;text-decoration:none;',
+		);
+		if ($options['id']) {
+			$attr = am($attr, array('id'=>$options['id']));
+		}
+		$a = $this->Html->link($span.$title, $url, $attr, false, false);
+		return $this->Html->para(null, $a, array('style'=>'margin:.5em 0;'));
+	}
+
 	function afterRender() {
-		$this->Javascript->codeBlock(
-			'$(function(){'.$this->_code.'});',
-			array('inline'=>false));
+		if ($this->_code) {
+			$this->Javascript->codeBlock('$(function(){'.$this->_code.'});',
+				array('inline'=>false));
+		}
 	}
 }
