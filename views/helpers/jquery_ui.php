@@ -1,7 +1,7 @@
 <?php
 class JqueryUiHelper extends AppHelper {
 	var $helpers = array('Html', 'Javascript');
-	var $_code = null;
+	var $_code = array();
 
 	function state($html, $options = array()) {
 		$default = array(
@@ -40,7 +40,7 @@ class JqueryUiHelper extends AppHelper {
 		if (!is_array($contents) && !isset($contents[0]['title']) && !isset($contents[0]['div'])) {
 			return false;
 		}
-		$this->_code .= '$("#'.$options['id'].'").accordion({header:"h3"});';
+		$this->_code[] = '$("#'.$options['id'].'").accordion({header:"h3"});';
 		$out = '';
 		foreach ($contents as $content) {
 			$h3 = $this->Html->tag('h3', '<a href="#">'.$content['title'].'</a>');
@@ -59,7 +59,7 @@ class JqueryUiHelper extends AppHelper {
 		if (!is_array($contents) && !isset($contents[0]['title']) && !isset($contents[0]['div'])) {
 			return false;
 		}
-		$this->_code .= '$("#'.$options['id'].'").tabs();';
+		$this->_code[] = '$("#'.$options['id'].'").tabs();';
 		$li = array();
 		$divs = '';
 		$i = 1;
@@ -73,9 +73,9 @@ class JqueryUiHelper extends AppHelper {
 		return $this->Html->div($options['class'], $out, array('id'=>$options['id']));
 	}
 	
-	function dialogLink($title, $url, $options=array()) {
+	function link($title, $url, $options=array()) {
 		$default = array(
-			'id'=>'dialog_link',
+			'id'=>null,
 			'class'=>null,
 			'icon'=>'newwin',
 			'state'=>'default',
@@ -99,12 +99,24 @@ class JqueryUiHelper extends AppHelper {
 			$attr = am($attr, array('id'=>$options['id']));
 		}
 		$a = $this->Html->link($span.$title, $url, $attr, false, false);
-		return $this->Html->para(null, $a, array('style'=>'margin:.5em 0;'));
+		$this->_code[] =
+<<<EOT
+$(function(){
+	$('p.ui-button a').hover(
+		function() { $(this).addClass('ui-state-hover'); },
+		function() { $(this).removeClass('ui-state-hover'); }
+	);
+});
+EOT;
+		return $this->Html->para('ui-button', $a, array(
+			'style'=>'margin:.5em 0;'));
 	}
 
 	function afterRender() {
 		if ($this->_code) {
-			$this->Javascript->codeBlock('$(function(){'.$this->_code.'});',
+			$rs = array_unique($this->_code);
+			$this->Javascript->codeBlock(
+				'$(function(){'.implode(' ', $rs).'});',
 				array('inline'=>false));
 		}
 	}
