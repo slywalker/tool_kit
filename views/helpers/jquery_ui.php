@@ -73,7 +73,7 @@ class JqueryUiHelper extends AppHelper {
 		return $this->Html->div($options['class'], $out, array('id'=>$options['id']));
 	}
 	
-	function link($title, $url, $options=array()) {
+	function link($title, $url = null, $htmlAttributes = array(), $confirmMessage = false, $escapeTitle = true) {
 		$default = array(
 			'id'=>null,
 			'class'=>null,
@@ -81,24 +81,27 @@ class JqueryUiHelper extends AppHelper {
 			'state'=>'default',
 			'corner'=>'all',
 		);
-		$options = am($default, $options);
+		$htmlAttributes = am($default, $htmlAttributes);
 		
 		$span = '';
-		if ($options['icon']) {
+		if ($htmlAttributes['icon']) {
 			$attr = array(
-				'class'=>'ui-icon ui-icon-'.$options['icon'],
+				'class'=>'ui-icon ui-icon-'.$htmlAttributes['icon'],
 				'style'=>'left:0.2em;margin:-8px 5px 0 0;position:absolute;top:50%;',
 			);
 			$span = $this->Html->tag('span', '', $attr);
 		}
 		$attr = array(
-			'class'=>$options['class'].' ui-state-'.$options['state'].' ui-corner-'.$options['corner'],
+			'class'=>$htmlAttributes['class'].' ui-state-'.$htmlAttributes['state'].' ui-corner-'.$htmlAttributes['corner'],
 			'style'=>'padding:0.4em 1em 0.4em 20px;position:relative;text-decoration:none;',
 		);
-		if ($options['id']) {
-			$attr = am($attr, array('id'=>$options['id']));
+		if ($htmlAttributes['id']) {
+			$attr = am($attr, array('id'=>$htmlAttributes['id']));
 		}
-		$a = $this->Html->link($span.$title, $url, $attr, false, false);
+		if ($escapeTitle) {
+			$title = h($title);
+		}
+		$a = $this->Html->link($span.$title, $url, $attr, $confirmMessage, false);
 		$this->_code[] =
 <<<EOT
 $(function(){
