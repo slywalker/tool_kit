@@ -19,7 +19,7 @@
 class ForeignKeyBehavior extends ModelBehavior {
 	var $foreignKey = 'user_id';
 	var $modelName = 'User';
-	var $callBack = 'readForeignKeyValue';
+	var $callback = 'callbackForeignKey';
 
 	function setup(&$model, $config=array())
 	{
@@ -30,15 +30,15 @@ class ForeignKeyBehavior extends ModelBehavior {
 		if (isset($config['modelName'])) {
 			$this->modelName = $config['modelName'];
 		}
-		if (isset($config['callBack'])) {
-			$this->callBack = $config['callBack'];
+		if (isset($config['callback'])) {
+			$this->callback = $config['callback'];
 		}
 	}
 
 	function beforeFind(&$model, $query)
 	{
 		if ($model->name === $this->modelName) {
-			$id = $model->{$this->callBack}();
+			$id = $model->{$this->callback}();
 			if ($id) {
 				$conditions = array(
 					$model->name.'.id'=>$id,
@@ -48,7 +48,7 @@ class ForeignKeyBehavior extends ModelBehavior {
 		}
 		
 		elseif ($model->hasField($this->foreignKey)) {
-			$value = $model->{$this->callBack}();
+			$value = $model->{$this->callback}();
 			if ($value) {
 				$conditions = array(
 					$model->alias.'.'.$this->foreignKey=>$value,
@@ -64,7 +64,7 @@ class ForeignKeyBehavior extends ModelBehavior {
 	function beforeValidate(&$model)
 	{
 		if ($model->hasField($this->foreignKey)) {
-			$value = $model->{$this->callBack}();
+			$value = $model->{$this->callback}();
 			if ($value) {
 				$model->data[$model->alias][$this->foreignKey] = $value;
 			} else {
