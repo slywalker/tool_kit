@@ -93,7 +93,7 @@ class JqueryUiHelper extends AppHelper {
 		}
 		$attr = array(
 			'class'=>$htmlAttributes['class'].' ui-state-'.$htmlAttributes['state'].' ui-corner-'.$htmlAttributes['corner'],
-			'style'=>'padding:0.4em 1em 0.4em 20px;position:relative;text-decoration:none;',
+			'style'=>'padding:0.6em 1em 0.4em 20px;position:relative;text-decoration:none;',
 		);
 		if ($htmlAttributes['id']) {
 			$attr = am($attr, array('id'=>$htmlAttributes['id']));
