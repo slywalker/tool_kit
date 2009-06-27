@@ -8,13 +8,15 @@
  * @version     0.10.1311_pre_beta
  * @license     OPPL
  *
- * Modified by 	Mahmoud Lababidi <lababidi@bearsontherun.com>
- * Date			Dec 16, 2006
+ * Modified by  Mahmoud Lababidi <lababidi@bearsontherun.com>
+ * Date         Dec 16, 2006
+ * Modified by  Yasuo Harada <slywalker.net@gmail.com>
+ * Date         Jun 27, 2009
  * 
  *
  */
-class GoogleMapHelper extends Helper {
-
+class GoogleMapHelper extends AppHelper {
+	var $helpers = array('Html', 'Javascript');
 	var $errors = array();
 
 	var $key = "ABQIAAAAnfs7bKE82qgb3Zc2YyS-oBT2yXp_ZAY8_ufC3CFXhHIE1NvwkxSySz_REpPq-4WZA27OwgbtyR3VcA";
@@ -35,12 +37,27 @@ class GoogleMapHelper extends Helper {
 			map.addControl(new GLargeMapControl());
 			map.addControl(new GMapTypeControl());
 			map.setMapType(map.getMapTypes()[".$default['type']."]);
-			map.centerAndZoom(new GPoint(".$default['long'].", ".$default['lat']."), ".$default['zoom'].");
+			map.centerAndZoom(new GPoint(".$default['lon'].", ".$default['lat']."), ".$default['zoom'].");
 		}
 		//]]>
 		</script>";
 
 		return $out;
+	}
+	
+	function mbMap($options)
+	{
+		$default = array(
+			'center'=>'', // lat,lon
+			'markers'=>'', // lat,lon,color
+			'zoom'=>1,
+			'size'=>'240x300',
+			'key'=>$this->key,
+		);
+		$options = am($default, $options);
+		$url = 'http://maps.google.com/staticmap?';
+		$url = $url.http_build_query($options);
+		return $this->Html->image($url);
 	}
 
 	function addMarkers(&$data, $icon=null)
@@ -128,7 +145,13 @@ class GoogleMapHelper extends Helper {
 		';
 		return $this->addClick('mapClick', $mapClick);
 		
-	}	
-
+	}
+		
+	function afterRender()
+	{
+		$this->Javascript->link(
+			'http://maps.google.com/maps?file=api&v=2&key='.$this->key,
+			false);
+	}
 }
 ?>
