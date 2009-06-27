@@ -17,7 +17,7 @@ class GoogleMapHelper extends Helper {
 
 	var $errors = array();
 
-	var $key = "ABQIAAAAvCbGW5EV-rEJpZP96-o0NxQ1SJ3zY01f5orEIl-iQQteZ6BtLxQEPgACixUBYnGKDDbCXFOnFTJ1JQ";
+	var $key = "ABQIAAAAnfs7bKE82qgb3Zc2YyS-oBT2yXp_ZAY8_ufC3CFXhHIE1NvwkxSySz_REpPq-4WZA27OwgbtyR3VcA";
 
 	function map($default, $style = 'width: 400px; height: 400px' )
 	{

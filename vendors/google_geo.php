@@ -58,7 +58,7 @@ class GoogleGeo {
 
 //your GoogleMaps Api Key
 var $api_key = 
-	"ABQIAAAAvCbGW5EV-rEJpZP96-o0NxRPc12EQQx6Mu62N-PrzOQunKtWdRSVe1MQKF8NjPuHWXoMt0I-QOiNqQ"; 
+	"ABQIAAAAnfs7bKE82qgb3Zc2YyS-oBT2yXp_ZAY8_ufC3CFXhHIE1NvwkxSySz_REpPq-4WZA27OwgbtyR3VcA"; 
 
 function GoogleGeo($address=null){
 	$this->address_set = false;
