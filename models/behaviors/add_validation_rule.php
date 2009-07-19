@@ -4,7 +4,10 @@ class AddValidationRuleBehavior extends ModelBehavior {
 	function checkCompare(&$model, $data, $suffix) {
 		$field = key($data);
 		$value = current($data);
-		return $value === $model->data[$model->alias][$field.$suffix];
+		if (isset($model->data[$model->alias][$field.$suffix])) {
+			return $value === $model->data[$model->alias][$field.$suffix];
+		}
+		return true;
 	}
 	
 	function alphaNumeric(&$model, $data) {
