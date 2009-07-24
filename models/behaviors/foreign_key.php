@@ -48,14 +48,16 @@ class ForeignKeyBehavior extends ModelBehavior {
 		}
 		
 		elseif ($model->hasField($this->foreignKey)) {
-			$value = $model->{$this->callback}();
-			if ($value) {
-				$conditions = array(
-					$model->alias.'.'.$this->foreignKey=>$value,
-				);
-				$query['conditions'] = Set::merge($query['conditions'], $conditions);
-			} else {
-				trigger_error(__("ForeignKeyBehavior: Can't set at find foreign key [{$this->foreignKey}] in {$model->alias}.", true), E_USER_ERROR);
+			if (!isset($query['foreignKey']) || $query['foreignKey'] !== false) {
+				$value = $model->{$this->callback}();
+				if ($value) {
+					$conditions = array(
+						$model->alias.'.'.$this->foreignKey=>$value,
+					);
+					$query['conditions'] = Set::merge($query['conditions'], $conditions);
+				} else {
+					trigger_error(__("ForeignKeyBehavior: Can't set at find foreign key [{$this->foreignKey}] in {$model->alias}.", true), E_USER_ERROR);
+				}
 			}
 		}
 		return $query;
