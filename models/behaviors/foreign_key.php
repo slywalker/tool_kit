@@ -67,7 +67,7 @@ class ForeignKeyBehavior extends ModelBehavior {
 	{
 		if ($model->hasField($this->foreignKey)) {
 			$value = $model->{$this->callback}();
-			if ($value) {
+			if ($value && !isset($model->data[$model->alias][$this->foreignKey])) {
 				$model->data[$model->alias][$this->foreignKey] = $value;
 			} else {
 				trigger_error(__("ForeignKeyBehavior: Can't set at save foreign key [{$this->foreignKey}] in {$model->alias}.", true), E_USER_ERROR);
