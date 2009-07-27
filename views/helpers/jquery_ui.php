@@ -102,7 +102,7 @@ class JqueryUiHelper extends AppHelper {
 			$title = h($title);
 		}
 		$a = $this->Html->link($span.$title, $url, $attr, $confirmMessage, false);
-		$this->_code[] =
+		$code =
 <<<EOT
 $(function(){
 	$('p.ui-button a').hover(
@@ -111,16 +111,20 @@ $(function(){
 	);
 });
 EOT;
-		return $this->Html->para('ui-button', $a, array(
-			'style'=>'margin:.5em 0;'));
+		$this->Javascript->codeBlock($code, array('inline' => false));
+		return $this->Html->para('ui-button', $a, array('style' => 'margin:.5em 0;'));
 	}
 
-	function afterRender() {
-		if ($this->_code) {
-			$rs = array_unique($this->_code);
-			$this->Javascript->codeBlock(
-				'$(function(){'.implode(' ', $rs).'});',
-				array('inline'=>false));
-		}
+	function datepicker($id) {
+		$this->Javascript->link('jquery-ui-i18n', false);
+		$code =
+<<<EOT
+$(function(){
+	$.datepicker.setDefaults($.extend($.datepicker.regional['ja']));
+	$('#{$id}').datepicker();
+});
+EOT;
+		$this->Javascript->codeBlock($code, array('inline' => false));
 	}
+
 }
