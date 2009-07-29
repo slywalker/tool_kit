@@ -24,8 +24,10 @@ class Rss extends AppModel {
 			$results = Cache::read('rss_cache'.$key);
 		}
 		if (!$results) {
-			$data = @file_get_contents($options['url']);
-			if (!$data) {
+			App::import('Core', 'HttpSocket');
+			$HttpSocet = new HttpSocket;
+			$data = $HttpSocet->get($options['url']);
+			if ($HttpSocet->response['status']['reason-phrase'] !== 'OK') {
 				return $this->_errorRss($method);
 			}
 			if (!$results = $this->_parse($data)) {
