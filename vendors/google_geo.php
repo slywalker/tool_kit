@@ -101,7 +101,7 @@ function geo($address = null){
 			return $geo;
 			}
 		}
-	if($result[0]=='602') {
+	if(isset($result[0]) && $result[0]=='602') {
 			$url = $base;
 			if(isset($this->address_string)){
 				$url.=urlencode($this->address_string);
