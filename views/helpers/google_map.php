@@ -19,7 +19,13 @@ class GoogleMapHelper extends AppHelper {
 	var $helpers = array('Html', 'Javascript');
 	var $errors = array();
 
-	var $key = "ABQIAAAAnfs7bKE82qgb3Zc2YyS-oBT2yXp_ZAY8_ufC3CFXhHIE1NvwkxSySz_REpPq-4WZA27OwgbtyR3VcA";
+	var $key = null;
+	// localhost
+	//"ABQIAAAAnfs7bKE82qgb3Zc2YyS-oBT2yXp_ZAY8_ufC3CFXhHIE1NvwkxSySz_REpPq-4WZA27OwgbtyR3VcA";
+
+	function setKey($key) {
+		$this->key = $key;
+	}
 
 	function map($default, $style = 'width: 400px; height: 400px' )
 	{
@@ -149,9 +155,9 @@ class GoogleMapHelper extends AppHelper {
 		
 	function afterRender()
 	{
-		$this->Javascript->link(
-			'http://maps.google.com/maps?file=api&v=2&key='.$this->key,
-			false);
+		if ($this->key) {
+			$this->Javascript->link('http://maps.google.com/maps?file=api&v=2&key='.$this->key, false);
+		}
 	}
 }
 ?>
